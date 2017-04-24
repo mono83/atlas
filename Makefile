@@ -2,6 +2,7 @@
 .DEFAULT_GOAL := help
 
 deps: ## Downloads dependencies
+	go get github.com/go-sql-driver/mysql
 	go get github.com/spf13/cobra
 
 test: ## Runs unit tests
