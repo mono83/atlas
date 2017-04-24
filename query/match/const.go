@@ -8,20 +8,22 @@ const (
 	NotIsNull         Type = 2
 	Eq                Type = 3 // Alias
 	Equals            Type = 3
-	Neq               Type = 4 // Alias
-	NotEquals         Type = 4
-	Gt                Type = 5 // Alias
-	GreaterThan       Type = 5
-	Lte               Type = 6 // Alias
-	LowerThanEquals   Type = 6
-	Gte               Type = 7 // Alias
-	GreaterThanEquals Type = 7
-	Lt                Type = 8 // Alias
-	LowerThan         Type = 8
+	In                Type = 4
+	NotIn             Type = 5
+	Neq               Type = 6 // Alias
+	NotEquals         Type = 6
+	Gt                Type = 7 // Alias
+	GreaterThan       Type = 7
+	Lte               Type = 8 // Alias
+	LowerThanEquals   Type = 8
+	Gte               Type = 9 // Alias
+	GreaterThanEquals Type = 9
+	Lt                Type = 10 // Alias
+	LowerThan         Type = 10
 )
 
 var lower = 1
-var upper = 8
+var upper = 10
 
 // All returns full list of rule operations, except Unknown
 // Used in tests primarily

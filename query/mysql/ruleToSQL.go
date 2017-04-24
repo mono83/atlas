@@ -23,20 +23,51 @@ func ruleToSQL(rule query.RuleDef, sb *bytes.Buffer, placeholders *[]interface{}
 	left := rule.GetLeft()
 	right := rule.GetRight()
 
+	switch rule.GetType() {
+	case match.IsNull, match.NotIsNull:
+		return ruleToSQLNulls(left, rule.GetType(), sb)
+	case match.Equals,
+		match.NotEquals,
+		match.GreaterThan,
+		match.LowerThan,
+		match.GreaterThanEquals,
+		match.LowerThanEquals:
+		return ruleToSQLSimpleOps(left, right, rule.GetType(), sb, placeholders)
+	case match.In, match.NotIn:
+		return ruleToSQLIN(left, right, rule.GetType(), sb, placeholders)
+	default:
+		return UnsupportedOperation(rule.GetType())
+	}
+}
+
+// ruleToSQLNulls handles IS NULL and NOT IS NULL cases
+func ruleToSQLNulls(left interface{}, t match.Type, sb *bytes.Buffer) error {
 	if column, ok := left.(query.Named); ok {
 		columnToSQL(column, sb)
 	} else {
-		return errors.New("Not a column on left side of query")
+		return LeftIsNotColumn{Real: left}
 	}
 
-	rightSideExpected := true
-	switch rule.GetType() {
-	case match.IsNull:
+	if t == match.IsNull {
 		sb.WriteString(" IS NULL")
-		rightSideExpected = false
-	case match.NotIsNull:
+	} else if t == match.NotIsNull {
 		sb.WriteString(" NOT IS NULL")
-		rightSideExpected = false
+	} else {
+		return UnsupportedOperation(t)
+	}
+
+	return nil
+}
+
+// ruleToSQLSimpleOps handles simple operations
+func ruleToSQLSimpleOps(left, right interface{}, t match.Type, sb *bytes.Buffer, placeholders *[]interface{}) error {
+	if column, ok := left.(query.Named); ok {
+		columnToSQL(column, sb)
+	} else {
+		return LeftIsNotColumn{Real: left}
+	}
+
+	switch t {
 	case match.Equals:
 		sb.WriteString(" =")
 	case match.NotEquals:
@@ -50,19 +81,76 @@ func ruleToSQL(rule query.RuleDef, sb *bytes.Buffer, placeholders *[]interface{}
 	case match.LowerThanEquals:
 		sb.WriteString(" <=")
 	default:
-		return errors.New("Unsupported match " + rule.GetType().String())
+		return UnsupportedOperation(t)
 	}
 
-	if rightSideExpected {
-		if column, ok := right.(query.Named); ok {
-			sb.WriteRune(' ')
-			columnToSQL(column, sb)
-		} else {
-			sb.WriteRune(' ')
-			sb.WriteString("?")
-			*placeholders = append(*placeholders, right)
+	if column, ok := right.(query.Named); ok {
+		sb.WriteRune(' ')
+		columnToSQL(column, sb)
+	} else {
+		sb.WriteRune(' ')
+		sb.WriteString("?")
+		*placeholders = append(*placeholders, right)
+	}
+
+	return nil
+}
+
+// ruleToSQLIN used to handle IN and NOT IN clauses
+func ruleToSQLIN(left, right interface{}, t match.Type, sb *bytes.Buffer, placeholders *[]interface{}) error {
+	l := 0
+	if s, ok := right.([]string); ok {
+		// String slice
+		l = len(s)
+		for _, v := range s {
+			*placeholders = append(*placeholders, v)
 		}
+	} else if s, ok := right.([]int); ok {
+		// Integer slice
+		l = len(s)
+		for _, v := range s {
+			*placeholders = append(*placeholders, v)
+		}
+	} else if s, ok := right.([]int64); ok {
+		// Long slice
+		l = len(s)
+		for _, v := range s {
+			*placeholders = append(*placeholders, v)
+		}
+	} else if s, ok := right.([]interface{}); ok {
+		// Slice of some values
+		l = len(s)
+		*placeholders = append(*placeholders, s...)
+	} else {
+		return errors.New("Only []int, []int64, []string and []interface{} are allowed for IN operations")
 	}
 
+	if l == 0 {
+		return errors.New("Missing data for IN operations - empty values slice received")
+	}
+
+	if column, ok := left.(query.Named); ok {
+		columnToSQL(column, sb)
+	} else {
+		return LeftIsNotColumn{Real: left}
+	}
+
+	switch t {
+	case match.In:
+		sb.WriteString(" IN (")
+	case match.NotIn:
+		sb.WriteString(" NOT IN (")
+	default:
+		return UnsupportedOperation(t)
+	}
+
+	for i := 0; i < l; i++ {
+		if i > 0 {
+			sb.WriteRune(',')
+		}
+		sb.WriteRune('?')
+	}
+
+	sb.WriteRune(')')
 	return nil
 }

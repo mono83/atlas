@@ -57,8 +57,14 @@ func TestRuleToSQL(t *testing.T) {
 	assert.RuleSQL(query.Rule{query.String("foo"), match.Gte, "7"}, "`foo` >= ?")
 	assert.RuleSQL(query.Rule{query.String("foo"), match.Lt, "7"}, "`foo` < ?")
 	assert.RuleSQL(query.Rule{query.String("foo"), match.Lte, "7"}, "`foo` <= ?")
+	assert.RuleSQL(query.Rule{query.String("bar"), match.In, []interface{}{5, int64(6), 7}}, "`bar` IN (?,?,?)")
+	assert.RuleSQL(query.Rule{query.String("bar"), match.NotIn, []interface{}{3, "false"}}, "`bar` NOT IN (?,?)")
+	assert.RuleSQL(query.Rule{query.String("bar"), match.In, []interface{}{"true"}}, "`bar` IN (?)")
 
 	assert.RulePh(query.Rule{query.String("foo"), match.Lte, "7"}, "7")
 	assert.RulePh(query.Rule{query.String("foo"), match.Lte, 7}, 7)
 	assert.RulePh(query.Rule{query.String("foo"), match.Lte, 0.1}, 0.1)
+	assert.RulePh(query.Rule{query.String("bar"), match.In, []interface{}{5, int64(6), 7}}, 5, int64(6), 7)
+	assert.RulePh(query.Rule{query.String("bar"), match.NotIn, []interface{}{3, "false"}}, 3, "false")
+	assert.RulePh(query.Rule{query.String("bar"), match.In, []interface{}{"true"}}, "true")
 }
