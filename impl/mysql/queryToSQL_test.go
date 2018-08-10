@@ -9,14 +9,14 @@ import (
 func TestQueryToSQL(t *testing.T) {
 	assert := assert.New(t)
 
-	q := query.Select{query.String("tokens"), nil, nil, nil, 0, 0}
+	q := query.Select{Schema: query.String("tokens")}
 
 	sql, ph, err := QueryToSQL(q)
 	assert.NoError(err)
 	assert.Len(ph, 0)
 	assert.Equal("SELECT * FROM `tokens`", sql)
 
-	q = query.Select{query.String("tokens"), nil, nil, []query.OrderDef{query.SimpleAsc("id"), query.SimpleDesc("time")}, 2, 0}
+	q = query.Select{Schema: query.String("tokens"), Order: []query.Sorting{query.SimpleAsc("id"), query.SimpleDesc("time")}, Limit: 2}
 
 	sql, ph, err = QueryToSQL(q)
 	assert.NoError(err)
@@ -25,12 +25,10 @@ func TestQueryToSQL(t *testing.T) {
 
 	// Building query
 	q = query.Select{
-		query.String("users"),
-		[]query.Named{query.String("id"), query.AliasedName{"user_name", "name"}},
-		nil,
-		nil,
-		10,
-		500,
+		Schema:  query.String("users"),
+		Columns: []query.Named{query.String("id"), query.AliasedName{Name: "user_name", Alias: "name"}},
+		Limit:   10,
+		Offset:  500,
 	}
 
 	sql, ph, err = QueryToSQL(q)

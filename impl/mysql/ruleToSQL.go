@@ -8,7 +8,7 @@ import (
 )
 
 // RuleToSQL converts rule struct into partial RuleSQL
-func RuleToSQL(rule query.RuleDef) (*PartialSQL, error) {
+func RuleToSQL(rule query.Rule) (*PartialSQL, error) {
 	sb := bytes.NewBufferString("")
 	placeholders := []interface{}{}
 
@@ -19,7 +19,7 @@ func RuleToSQL(rule query.RuleDef) (*PartialSQL, error) {
 	return &PartialSQL{SQL: sb.String(), Placeholders: placeholders}, nil
 }
 
-func ruleToSQL(rule query.RuleDef, sb *bytes.Buffer, placeholders *[]interface{}) error {
+func ruleToSQL(rule query.Rule, sb *bytes.Buffer, placeholders *[]interface{}) error {
 	left := rule.GetLeft()
 	right := rule.GetRight()
 

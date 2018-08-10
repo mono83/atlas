@@ -10,7 +10,7 @@ import (
 // QueryToSQL converts provided query to SQL
 func QueryToSQL(q query.SelectDef) (string, []interface{}, error) {
 	sb := bytes.NewBufferString("SELECT ")
-	placeholders := []interface{}{}
+	var placeholders []interface{}
 
 	// Printing columns
 	if columns := q.GetColumns(); len(columns) > 0 {
@@ -46,13 +46,13 @@ func QueryToSQL(q query.SelectDef) (string, []interface{}, error) {
 				sb.WriteRune(',')
 			}
 
-			columnToSQL(o.GetColumn(), sb)
+			columnToSQL(o, sb)
 			if o.GetType() == query.Asc {
 				sb.WriteString(" ASC")
 			} else if o.GetType() == query.Desc {
 				sb.WriteString(" DESC")
 			} else {
-				return "", nil, errors.New("Unsupported order type")
+				return "", nil, errors.New("unsupported order type")
 			}
 		}
 	}

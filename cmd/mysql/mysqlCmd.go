@@ -3,7 +3,6 @@ package mysql
 import (
 	"database/sql"
 	"github.com/go-sql-driver/mysql"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"

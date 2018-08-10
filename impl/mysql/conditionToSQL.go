@@ -7,7 +7,7 @@ import (
 )
 
 // ConditionToSQL converts provided condition to MySQL query
-func ConditionToSQL(cond query.ConditionDef) (*PartialSQL, error) {
+func ConditionToSQL(cond query.Condition) (*PartialSQL, error) {
 	placeholders := []interface{}{}
 	sb := bytes.NewBufferString("")
 	if err := conditionToSQL(cond, sb, &placeholders); err != nil {
@@ -17,7 +17,7 @@ func ConditionToSQL(cond query.ConditionDef) (*PartialSQL, error) {
 	return &PartialSQL{SQL: sb.String(), Placeholders: placeholders}, nil
 }
 
-func conditionToSQL(cond query.ConditionDef, sb *bytes.Buffer, placeholders *[]interface{}) error {
+func conditionToSQL(cond query.Condition, sb *bytes.Buffer, placeholders *[]interface{}) error {
 	if len(cond.GetConditions()) == 0 && len(cond.GetRules()) == 0 {
 		return errors.New("Empty condition - it has no rules and conditions")
 	} else if len(cond.GetConditions()) == 0 && len(cond.GetRules()) == 1 {

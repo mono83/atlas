@@ -1,37 +1,37 @@
 package query
 
-// Order is simple OrderDef implementation
-type Order struct {
+// CommonSorting is simple Sorting implementation
+type CommonSorting struct {
 	Column Named
-	Type   OrderType
+	Type   SortOrder
 }
 
 // GetType returns ordering type (ASC or DESC)
-func (o Order) GetType() OrderType { return o.Type }
+func (s CommonSorting) GetType() SortOrder { return s.Type }
 
 // GetColumn returns column name, used in ordering
-func (o Order) GetColumn() Named { return o.Column }
+func (s CommonSorting) GetColumn() Named { return s.Column }
 
-// SimpleAsc is ASC-only OrderDef implementation
+// SimpleAsc is ASC-only Sorting implementation
 type SimpleAsc string
 
 // GetName returns column name, used in ordering
 func (s SimpleAsc) GetName() string { return string(s) }
 
 // GetType always returns ASC
-func (s SimpleAsc) GetType() OrderType { return Asc }
+func (s SimpleAsc) GetType() SortOrder { return Asc }
 
 // GetColumn returns self, because structure implements Named
 func (s SimpleAsc) GetColumn() Named { return s }
 
-// SimpleDesc is DESC-only OrderDef implementation
+// SimpleDesc is DESC-only Sorting implementation
 type SimpleDesc string
 
 // GetName returns column name, used in ordering
 func (s SimpleDesc) GetName() string { return string(s) }
 
 // GetType always returns DESC
-func (s SimpleDesc) GetType() OrderType { return Desc }
+func (s SimpleDesc) GetType() SortOrder { return Desc }
 
 // GetColumn returns self, because structure implements Named
 func (s SimpleDesc) GetColumn() Named { return s }

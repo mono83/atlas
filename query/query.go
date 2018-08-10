@@ -6,8 +6,8 @@ import "errors"
 type Select struct {
 	Schema    Named
 	Columns   []Named
-	Condition ConditionDef
-	Order     []OrderDef
+	Condition Condition
+	Order     []Sorting
 	Limit     int
 	Offset    int64
 }
@@ -16,7 +16,7 @@ type Select struct {
 func (q Select) GetSchema() Named { return q.Schema }
 
 // GetCondition return condition, used in query
-func (q Select) GetCondition() ConditionDef { return q.Condition }
+func (q Select) GetCondition() Condition { return q.Condition }
 
 // GetColumns returns columns, used in query
 func (q Select) GetColumns() []Named { return q.Columns }
@@ -25,9 +25,9 @@ func (q Select) GetColumns() []Named { return q.Columns }
 func (q Select) GetOffsetLimit() (int64, int) { return q.Offset, q.Limit }
 
 // GetOrder return ordering, used in query
-func (q Select) GetOrder() []OrderDef { return q.Order }
+func (q Select) GetOrder() []Sorting { return q.Order }
 
-// Applies query on invoker
+// Apply applies query on invoker
 func (q Select) Apply(dao ReadOnlyDAO, target interface{}) error {
 	if dao == nil {
 		return errors.New("Empty DAO")
