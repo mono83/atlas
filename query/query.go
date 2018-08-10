@@ -1,5 +1,7 @@
 package query
 
+import "errors"
+
 // Select is Query implementation to query database
 type Select struct {
 	Schema    Named
@@ -24,3 +26,12 @@ func (q Select) GetOffsetLimit() (int64, int) { return q.Offset, q.Limit }
 
 // GetOrder return ordering, used in query
 func (q Select) GetOrder() []OrderDef { return q.Order }
+
+// Applies query on invoker
+func (q Select) Apply(dao ReadOnlyDAO, target interface{}) error {
+	if dao == nil {
+		return errors.New("Empty DAO")
+	}
+
+	return dao.Select(q, target)
+}

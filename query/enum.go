@@ -15,6 +15,7 @@ type ConditionType byte
 
 // List of defined condition relations
 const (
-	And ConditionType = 1
-	Or  ConditionType = 2
+	None ConditionType = 0
+	And  ConditionType = 1
+	Or   ConditionType = 2
 )

@@ -39,6 +39,8 @@ type SelectDef interface {
 	GetCondition() ConditionDef
 	GetOrder() []OrderDef
 	GetOffsetLimit() (offset int64, limit int)
+
+	Apply(dao ReadOnlyDAO, target interface{}) error
 }
 
 // ReadOnlyDAO describes components, used to invoke select statements
