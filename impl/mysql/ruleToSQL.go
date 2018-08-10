@@ -10,7 +10,7 @@ import (
 // RuleToSQL converts rule struct into partial RuleSQL
 func RuleToSQL(rule query.Rule) (*PartialSQL, error) {
 	sb := bytes.NewBufferString("")
-	placeholders := []interface{}{}
+	var placeholders []interface{}
 
 	if err := ruleToSQL(rule, sb, &placeholders); err != nil {
 		return nil, err
@@ -122,11 +122,11 @@ func ruleToSQLIN(left, right interface{}, t match.Type, sb *bytes.Buffer, placeh
 		l = len(s)
 		*placeholders = append(*placeholders, s...)
 	} else {
-		return errors.New("Only []int, []int64, []string and []interface{} are allowed for IN operations")
+		return errors.New("only []int, []int64, []string and []interface{} are allowed for IN operations")
 	}
 
 	if l == 0 {
-		return errors.New("Missing data for IN operations - empty values slice received")
+		return errors.New("missing data for IN operations - empty values slice received")
 	}
 
 	if column, ok := left.(query.Named); ok {

@@ -8,7 +8,7 @@ import (
 
 // ConditionToSQL converts provided condition to MySQL query
 func ConditionToSQL(cond query.Condition) (*PartialSQL, error) {
-	placeholders := []interface{}{}
+	var placeholders []interface{}
 	sb := bytes.NewBufferString("")
 	if err := conditionToSQL(cond, sb, &placeholders); err != nil {
 		return nil, err
@@ -19,7 +19,7 @@ func ConditionToSQL(cond query.Condition) (*PartialSQL, error) {
 
 func conditionToSQL(cond query.Condition, sb *bytes.Buffer, placeholders *[]interface{}) error {
 	if len(cond.GetConditions()) == 0 && len(cond.GetRules()) == 0 {
-		return errors.New("Empty condition - it has no rules and conditions")
+		return errors.New("empty condition - it has no rules and nested conditions")
 	} else if len(cond.GetConditions()) == 0 && len(cond.GetRules()) == 1 {
 		return ruleToSQL(cond.GetRules()[0], sb, placeholders)
 	} else if len(cond.GetRules()) == 0 && len(cond.GetConditions()) == 1 {
@@ -32,7 +32,7 @@ func conditionToSQL(cond query.Condition, sb *bytes.Buffer, placeholders *[]inte
 	} else if cond.GetType() == query.And {
 		sep = " AND "
 	} else {
-		return errors.New("Unsupported condition type")
+		return errors.New("unsupported condition logic - it neither AND nor OR")
 	}
 
 	sb.WriteRune('(')
