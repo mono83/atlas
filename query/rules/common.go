@@ -19,3 +19,15 @@ func IsNotNull(field interface{}) query.Rule {
 func Eq(left, right interface{}) query.Rule {
 	return query.CommonRule{L: left, R: right, Type: match.Equals}
 }
+
+// MatchID64 returns rule for matching IDs
+func MatchID64(id ...int64) query.Rule {
+	switch len(id) {
+	case 0:
+		return False{}
+	case 1:
+		return Eq("id", id[0])
+	default:
+		return query.CommonRule{L: "id", R: id, Type: match.In}
+	}
+}
