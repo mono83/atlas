@@ -8,7 +8,7 @@ import (
 // AtlasCmd is main command for Atlas
 var AtlasCmd = &cobra.Command{
 	Use:   "atlas",
-	Short: "Altas database toolset",
+	Short: "Atlas database toolset",
 }
 
 func init() {
