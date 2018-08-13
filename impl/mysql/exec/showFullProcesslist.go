@@ -21,7 +21,7 @@ type Process struct {
 // ShowFullProcesslist performs SHOW FULL PROCESSLIST command and returns slice of running queries
 func ShowFullProcesslist(db *sql.DB) ([]Process, error) {
 	if db == nil {
-		return nil, errors.New("Nil database provided")
+		return nil, errors.New("no database provided")
 	}
 
 	rows, err := db.Query("SHOW FULL PROCESSLIST")
@@ -32,7 +32,7 @@ func ShowFullProcesslist(db *sql.DB) ([]Process, error) {
 
 	var optDb, optInfo *string
 	var t int
-	list := []Process{}
+	var list []Process
 	for rows.Next() {
 		p := Process{}
 
