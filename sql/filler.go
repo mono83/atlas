@@ -5,12 +5,12 @@ import "errors"
 // Filler describes entity models, that can produce statements to
 // read themselves from database
 type Filler interface {
-	GetStatement(args ... interface{}) (Statement, error)
+	GetStatement(args ...interface{}) (Statement, error)
 }
 
 // SelectFill perform database select using Statement, obtained
 // from Filler ant then writes response to Filler
-func SelectFill(i Invoker, f Filler, args ... interface{}) error {
+func SelectFill(i Invoker, f Filler, args ...interface{}) error {
 	if i == nil {
 		return errors.New("invoker not provided")
 	}
