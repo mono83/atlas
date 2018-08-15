@@ -1,6 +1,9 @@
 package mysql
 
-import "github.com/mono83/atlas/query/match"
+import (
+	"github.com/mono83/atlas/query/match"
+	"reflect"
+)
 
 // UnsupportedOperation is error, returned when unsupported operation requested
 type UnsupportedOperation match.Type
@@ -16,4 +19,19 @@ type LeftIsNotColumn struct {
 
 func (LeftIsNotColumn) Error() string {
 	return "no column definition on left side of rule"
+}
+
+// ScanError is error, emitted on scan error (when data from MySQL writes into structs)
+type ScanError struct {
+	Target, Source reflect.Type
+}
+
+func (s ScanError) Error() string {
+	if s.Source == nil && s.Target == nil {
+		return "unable to Scan"
+	} else if s.Source == nil {
+		return "unable to Scan into " + s.Target.Name() + " from <nil>"
+	}
+
+	return "unable to Scan into " + s.Target.Name() + " from " + s.Source.Name()
 }
