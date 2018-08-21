@@ -1,9 +1,9 @@
 package mysql
 
 import (
-	"time"
-	"strconv"
 	"reflect"
+	"strconv"
+	"time"
 )
 
 // DurationSeconds is wrapper over time.Duration
