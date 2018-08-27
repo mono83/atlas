@@ -1,9 +1,10 @@
 package mysql
 
 import (
+	"testing"
+
 	"github.com/mono83/atlas/query"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func assertBuilder(t *testing.T, b *StatementBuilder, sql string, ph ...interface{}) {
@@ -14,13 +15,6 @@ func assertBuilder(t *testing.T, b *StatementBuilder, sql string, ph ...interfac
 				assert.Equal(t, ph[i], a)
 			}
 		}
-	}
-}
-
-func assertRule(t *testing.T, rule query.Rule, sql string, ph ...interface{}) {
-	b := NewStatementBuilder()
-	if assert.NoError(t, b.WriteRule(rule)) {
-		assertBuilder(t, b, sql, ph...)
 	}
 }
 

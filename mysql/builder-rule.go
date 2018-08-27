@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"errors"
+
 	"github.com/mono83/atlas/query"
 	"github.com/mono83/atlas/query/match"
 	"github.com/mono83/atlas/query/rules"
@@ -10,7 +11,7 @@ import (
 // WriteRule writes rule into builder
 func (s *StatementBuilder) WriteRule(rule query.Rule) error {
 	if rule == nil {
-		return errors.New("empty rule")
+		return errors.New("nil rule")
 	}
 	if _, ok := rule.(rules.False); ok {
 		s.buf.WriteString("1=0")
@@ -95,6 +96,10 @@ func (s *StatementBuilder) ruleToSQLSimpleOps(left, right interface{}, t match.T
 
 // ruleToSQLIN used to handle IN and NOT IN clauses
 func (s *StatementBuilder) ruleToSQLIN(left, right interface{}, t match.Type) error {
+	if right == nil {
+		return errors.New("nil provided in right side of IN/NOT IN operation")
+	}
+
 	l := 0
 	if x, ok := right.([]string); ok {
 		// String slice
