@@ -4,6 +4,9 @@
 deps: ## Downloads dependencies
 	go get github.com/go-sql-driver/mysql
 	go get github.com/spf13/cobra
+	go get github.com/mitchellh/go-homedir
+	go get github.com/go-ini/ini
+	go get github.com/stretchr/testify/assert
 
 test: ## Runs unit tests
 	go test ./...
