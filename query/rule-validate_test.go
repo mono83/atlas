@@ -55,6 +55,16 @@ var ruleValidationDataProvider = []struct {
 	{"only numbers and nameds should be in numeric rule on left side", match.LowerThanEquals, "foo", 2},
 	{"", match.LowerThanEquals, 1, String("foo")},
 	{"", match.LowerThanEquals, 1, 2},
+
+	// IN
+	{"nil found in IN/NOT IN rule on the right side", match.In, "foo", nil},
+	{"nil found in IN/NOT IN rule on the right side", match.NotIn, "foo", nil},
+	{"not a slice found in IN/NOT IN rule on the right side", match.In, "foo", "foo"},
+	{"not a slice found in IN/NOT IN rule on the right side", match.NotIn, "foo", "foo"},
+	{"empty slice found in IN/NOT IN rule on the right side", match.In, "foo", []int{}},
+	{"empty slice found in IN/NOT IN rule on the right side", match.NotIn, "foo", []int{}},
+	{"", match.In, "foo", []int{10}},
+	{"", match.NotIn, "foo", []int{10}},
 }
 
 func TestRuleValidate(t *testing.T) {

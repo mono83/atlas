@@ -2,6 +2,7 @@ package query
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/mono83/atlas/query/match"
 )
@@ -35,6 +36,17 @@ func ValidateRule(r Rule) error {
 			return errors.New("only numbers and nameds should be in numeric rule on left side")
 		} else if !isNamedOrNumber(r.GetRight()) {
 			return errors.New("only numbers and nameds should be in numeric rule on right side")
+		}
+	case match.In, match.NotIn:
+		right := r.GetRight()
+		if right == nil {
+			return errors.New("nil found in IN/NOT IN rule on the right side")
+		}
+		if reflect.TypeOf(right).Kind() != reflect.Slice {
+			return errors.New("not a slice found in IN/NOT IN rule on the right side")
+		}
+		if reflect.ValueOf(right).Len() == 0 {
+			return errors.New("empty slice found in IN/NOT IN rule on the right side")
 		}
 	}
 
