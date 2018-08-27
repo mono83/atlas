@@ -17,10 +17,12 @@ const (
 	Gt                Type = 7 // Alias
 	GreaterThan       Type = 7
 	Lte               Type = 8 // Alias
+	LesserThanEquals  Type = 8 // Alias
 	LowerThanEquals   Type = 8
 	Gte               Type = 9 // Alias
 	GreaterThanEquals Type = 9
 	Lt                Type = 10 // Alias
+	LesserThan        Type = 10 // Alias
 	LowerThan         Type = 10
 )
 
