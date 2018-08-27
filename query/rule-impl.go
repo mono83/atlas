@@ -1,6 +1,10 @@
 package query
 
-import "github.com/mono83/atlas/query/match"
+import (
+	"fmt"
+
+	"github.com/mono83/atlas/query/match"
+)
 
 // CommonRule is simple Rule implementation
 type CommonRule struct {
@@ -17,3 +21,14 @@ func (c CommonRule) GetRight() interface{} { return c.R }
 
 // GetType return operation, used in CommonRule
 func (c CommonRule) GetType() match.Type { return c.Type }
+
+func (c CommonRule) String() string {
+	return fmt.Sprintf(
+		`{CommonRule {%v (%T)} %s {%v (%T)}}`,
+		c.L,
+		c.L,
+		c.Type.String(),
+		c.R,
+		c.R,
+	)
+}

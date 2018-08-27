@@ -7,10 +7,10 @@ type CommonSorting struct {
 }
 
 // GetType returns ordering type (ASC or DESC)
-func (s CommonSorting) GetType() SortOrder { return s.Type }
+func (c CommonSorting) GetType() SortOrder { return c.Type }
 
-// GetColumn returns column name, used in ordering
-func (s CommonSorting) GetColumn() Named { return s.Column }
+// GetName returns column name, used in ordering
+func (c CommonSorting) GetName() string { return c.Column.GetName() }
 
 // SimpleAsc is ASC-only Sorting implementation
 type SimpleAsc string
