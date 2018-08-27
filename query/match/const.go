@@ -1,5 +1,7 @@
 package match
 
+import "strconv"
+
 // List of supported rule operations
 const (
 	Unknown Type = 0
@@ -21,6 +23,33 @@ const (
 	Lt                Type = 10 // Alias
 	LowerThan         Type = 10
 )
+
+func (t Type) String() string {
+	switch t {
+	case IsNull:
+		return "IS NULL"
+	case NotIsNull:
+		return "NOT IS NULL"
+	case Equals:
+		return "EQUALS"
+	case NotEquals:
+		return "NOT EQUALS"
+	case In:
+		return "IN"
+	case NotIn:
+		return "NOT IN"
+	case GreaterThan:
+		return "GREATER THAN"
+	case GreaterThanEquals:
+		return "GREATER THAN EQUALS"
+	case LowerThan:
+		return "LOWER THAN EQUALS"
+	case LowerThanEquals:
+		return "LOWER THAN EQUALS"
+	default:
+		return "Unknown type " + strconv.Itoa(int(t))
+	}
+}
 
 var lower = 1
 var upper = 10

@@ -1,7 +1,5 @@
 package match
 
-import "strconv"
-
 // Type describes matcher type and uses primarily in rules
 type Type int
 
@@ -22,10 +20,6 @@ func (o Type) Invert() Type {
 func (o Type) Valid() bool {
 	i := int(o)
 	return i >= lower && i <= upper
-}
-
-func (o Type) String() string {
-	return strconv.Itoa(int(o))
 }
 
 // Not reverses match condition
