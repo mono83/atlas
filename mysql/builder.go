@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"bytes"
+	"errors"
 	"github.com/mono83/atlas/query"
 	"github.com/mono83/atlas/sql"
 	"strings"
@@ -45,17 +46,38 @@ func (s *StatementBuilder) WriteKey(key string) *StatementBuilder {
 	return s
 }
 
-// WriteNamed writes named entity (column or schema)
-// Aliases are also supported
+// WriteNamed writes named entity
 func (s *StatementBuilder) WriteNamed(n query.Named) *StatementBuilder {
+	if n != nil {
+		s.WriteKey(n.GetName())
+	}
+
+	return s
+}
+
+// WriteColumn writes column name, aliases are supported
+func (s *StatementBuilder) WriteColumn(n query.Named) error {
 	if n != nil {
 		s.WriteKey(n.GetName())
 
 		if a, ok := n.(query.Aliased); ok {
-			s.buf.WriteRune(' ')
-			s.buf.WriteString(a.GetAlias())
+			s.buf.WriteString(" as ")
+			s.WriteKey(a.GetAlias())
 		}
+	} else {
+		return errors.New("nil provided instead column")
 	}
 
-	return s
+	return nil
+}
+
+// WriteSchema writes schema (table) name, aliases not supported
+func (s *StatementBuilder) WriteSchema(n query.Named) error {
+	if n != nil {
+		s.WriteKey(n.GetName())
+	} else {
+		return errors.New("nil provided instead schema")
+	}
+
+	return nil
 }
