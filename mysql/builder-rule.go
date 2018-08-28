@@ -17,6 +17,11 @@ func (s *StatementBuilder) WriteRule(rule query.Rule) error {
 		s.buf.WriteString("1=0")
 		return nil
 	}
+	if !rule.GetType().IsStandard() {
+		return errors.New(
+			"not standard rule operation type provided. Use mapping to convert into standard",
+		)
+	}
 
 	left := rule.GetLeft()
 	right := rule.GetRight()
