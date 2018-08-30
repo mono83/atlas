@@ -48,3 +48,31 @@ func TestOptStringScan(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkOptString_Scan(b *testing.B) {
+	inString := "This is string"
+	inBytes := []byte(inString)
+	var out OptString
+
+	b.Run("FromString", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			if err := out.Scan(inString); err != nil {
+				b.Error(b)
+			}
+		}
+	})
+	b.Run("FromBytes", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			if err := out.Scan(inBytes); err != nil {
+				b.Error(b)
+			}
+		}
+	})
+	b.Run("FromNil", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			if err := out.Scan(nil); err != nil {
+				b.Error(b)
+			}
+		}
+	})
+}

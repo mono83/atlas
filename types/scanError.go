@@ -26,5 +26,10 @@ func (s ScanError) Error() string {
 		return "unable to sql.Scan into " + s.Target.Name() + " from <nil>"
 	}
 
-	return "unable to sql.Scan into " + s.Target.Name() + " from " + s.Source.Name()
+	name := s.Source.Name()
+	if s.Source.Kind() == reflect.Slice {
+		name = "slice of " + s.Source.Elem().Name()
+	}
+
+	return "unable to sql.Scan into " + s.Target.Name() + " from " + name
 }
