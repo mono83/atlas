@@ -47,6 +47,17 @@ func (o OptString) IfNotEmpty(f func(string)) {
 	}
 }
 
+// Map method performs mapping if OptString contains value that is not nil
+// and returns OptString with result
+func (o OptString) Map(f func(string) string) OptString {
+	if f != nil && o.value != nil {
+		v := f(*o.value)
+		return OptString{value: &v}
+	}
+
+	return o
+}
+
 // Scan is sql.Scanner interface implementation
 func (o *OptString) Scan(src interface{}) error {
 	if src == nil {

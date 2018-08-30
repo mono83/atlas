@@ -1,8 +1,9 @@
 package types
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var optStringScanDataProvider = []struct {
@@ -75,4 +76,14 @@ func BenchmarkOptString_Scan(b *testing.B) {
 			}
 		}
 	})
+}
+
+func BenchmarkOptString_MapFilterOrElse(b *testing.B) {
+	v := "foo"
+	for i := 0; i < b.N; i++ {
+		r := OptString{value: &v}.Map(func(string) string { return "bar" }).Filter(func(x string) bool { return x == "foo" }).OrElse("baz")
+		if r != "baz" {
+			b.Error("baz expected")
+		}
+	}
 }
