@@ -8,6 +8,7 @@ deps: ## Downloads dependencies
 	go get github.com/go-ini/ini
 	go get github.com/stretchr/testify/assert
 	go get github.com/fzipp/gocyclo
+	go get golang.org/x/lint/golint
 
 test: ## Runs unit tests
 	go test ./...
