@@ -7,6 +7,7 @@ deps: ## Downloads dependencies
 	go get github.com/mitchellh/go-homedir
 	go get github.com/go-ini/ini
 	go get github.com/stretchr/testify/assert
+	go get github.com/fzipp/gocyclo
 
 test: ## Runs unit tests
 	go test ./...
@@ -14,7 +15,7 @@ test: ## Runs unit tests
 vet: ## Code check
 	gofmt -s -w .
 	go vet ./...
-	gocyclo -over 50 .
+	gocyclo -over 17 .
 	golint ./...
 
 travis: deps vet test ## Runs all tasks for travis CI
