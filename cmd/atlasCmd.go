@@ -13,6 +13,6 @@ var AtlasCmd = &cobra.Command{
 
 func init() {
 	AtlasCmd.AddCommand(
-		mysql.MySQLCmd,
+		mysql.Cmd,
 	)
 }

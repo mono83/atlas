@@ -16,10 +16,11 @@ var durationSecondsDataProvider = []struct {
 	{12 * time.Second, "", int64(12)},
 	{13 * time.Second, "", uint32(13)},
 	{14 * time.Second, "", uint64(14)},
+	{-16 * time.Second, "", []byte("-16")},
+	{12345 * time.Second, "", []byte("12345")},
+	{time.Duration(0), "strconv.ParseInt: parsing \"\": invalid syntax", []byte{}},
 	{time.Duration(0), "unable to sql.Scan into DurationSeconds from <nil>", nil},
 	{time.Duration(0), "unable to sql.Scan into DurationSeconds from uint8", byte(1)},
-	{time.Duration(0), "unable to sql.Scan into DurationSeconds from slice of uint8", []byte{}},
-	{time.Duration(0), "unable to sql.Scan into DurationSeconds from slice of uint8", []byte{1, 2, 3}},
 	{time.Duration(0), "unable to sql.Scan into DurationSeconds from string", "123"},
 }
 
@@ -44,6 +45,7 @@ func BenchmarkDurationSeconds_Scan(b *testing.B) {
 	inInt32 := int32(1000)
 	inUint64 := uint64(1000)
 	inUint32 := uint32(1000)
+	inBytes := []byte("22")
 	inInt := int(1000)
 	var out DurationSeconds
 
@@ -78,6 +80,13 @@ func BenchmarkDurationSeconds_Scan(b *testing.B) {
 	b.Run("FromInt", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			if err := out.Scan(inInt); err != nil {
+				b.Error(b)
+			}
+		}
+	})
+	b.Run("FromBytes", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			if err := out.Scan(inBytes); err != nil {
 				b.Error(b)
 			}
 		}

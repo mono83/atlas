@@ -2,6 +2,7 @@ package types
 
 import (
 	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -27,6 +28,13 @@ func (d *DurationSeconds) Scan(src interface{}) error {
 		return nil
 	case int:
 		d.Duration = time.Second * time.Duration(int64(src.(int)))
+		return nil
+	case []byte:
+		v, err := strconv.ParseInt(string(src.([]byte)), 10, 64)
+		if err != nil {
+			return err
+		}
+		d.Duration = time.Second * time.Duration(v)
 		return nil
 	default:
 		return ScanError{Target: reflect.TypeOf(DurationSeconds{}), Source: reflect.TypeOf(src)}
