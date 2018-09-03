@@ -20,7 +20,7 @@ var typesDataProvider = []struct {
 	{false, true, "Custom #255", Unknown, Type(255)},
 
 	{true, false, "Is_Null", NotIsNull, IsNull},
-	{true, false, "Not_Is_Null", IsNull, NotIsNull},
+	{true, false, "Is_Not_Null", IsNull, NotIsNull},
 	{true, false, "Equal", NotEquals, Equals},
 	{true, false, "In", NotIn, In},
 	{true, false, "Not_In", In, NotIn},

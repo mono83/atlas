@@ -1,6 +1,8 @@
 package match
 
-import "strconv"
+import (
+	"strconv"
+)
 
 // List of supported rule operations
 const (
@@ -49,15 +51,12 @@ func (t Type) String() string {
 // Names returns full list of string names (including math symbols), that can be
 // used to identify rule type
 func (t Type) Names() []string {
-	var response []string
 	def, ok := Definitions[t]
-	if ok {
-		response = append(response, def.Name)
-		response = append(response, def.Aliases...)
-		response = append(response, def.Math...)
+	if !ok {
+		return nil
 	}
 
-	return response
+	return def.Names()
 }
 
 // Theese constants describes top and bottom boundaries for registered
@@ -70,7 +69,7 @@ var (
 // All returns full list of rule operations, except Unknown
 // Used in tests primarily
 func All() []Type {
-	all := []Type{}
+	var all []Type
 	for i := lower; i <= upper; i++ {
 		all = append(all, Type(i))
 	}

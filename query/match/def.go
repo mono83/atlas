@@ -8,13 +8,24 @@ type Def struct {
 	Args    int
 }
 
+// Names returns full list of string names (including math symbols), that can be
+// used to identify rule type
+func (d Def) Names() []string {
+	var response []string
+	response = append(response, d.Name)
+	response = append(response, d.Aliases...)
+	response = append(response, d.Math...)
+
+	return response
+}
+
 // Definitions contains data for known definitions
 var Definitions map[Type]Def
 
 func init() {
 	Definitions = map[Type]Def{}
 	Definitions[IsNull] = Def{Args: 1, Name: "Is_Null"}
-	Definitions[NotIsNull] = Def{Args: 1, Name: "Not_Is_Null", Aliases: []string{"Is_Not_Null", "IsNotNull"}}
+	Definitions[NotIsNull] = Def{Args: 1, Name: "Is_Not_Null", Aliases: []string{"Not_Is_Null", "IsNotNull"}}
 	Definitions[Equals] = Def{Args: 2, Name: "Equal", Aliases: []string{"Equals", "Eq"}, Math: []string{"="}}
 	Definitions[NotEquals] = Def{Args: 2, Name: "Not_Equal", Aliases: []string{"Not_Equals", "NotEqual", "NotEquals", "Neq"}, Math: []string{"!=", "≠"}}
 	Definitions[In] = Def{Args: 2, Name: "In"}
