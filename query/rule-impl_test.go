@@ -14,5 +14,5 @@ func TestCommonRule(t *testing.T) {
 	assert.Equal(1, r.GetLeft())
 	assert.Equal("foo", r.GetRight())
 	assert.Equal(match.Equals, r.GetType())
-	assert.Equal("{CommonRule {1 (int)} EQUALS {foo (string)}}", r.String())
+	assert.Equal("{CommonRule {1 (int)} Equal {foo (string)}}", r.String())
 }

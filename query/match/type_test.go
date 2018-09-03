@@ -13,21 +13,21 @@ var typesDataProvider = []struct {
 	Inverted   Type
 	Type       Type
 }{
-	{false, false, "UNKNOWN", Unknown, Unknown},
-	{false, false, "UNSUPPORTED #127", Unknown, Type(127)},
+	{false, false, "Unknown", Unknown, Unknown},
+	{false, false, "Unsupported #127", Unknown, Type(127)},
 
-	{false, true, "CUSTOM #128", Unknown, Type(128)},
-	{false, true, "CUSTOM #255", Unknown, Type(255)},
+	{false, true, "Custom #128", Unknown, Type(128)},
+	{false, true, "Custom #255", Unknown, Type(255)},
 
-	{true, false, "IS NULL", NotIsNull, IsNull},
-	{true, false, "NOT IS NULL", IsNull, NotIsNull},
-	{true, false, "EQUALS", NotEquals, Equals},
-	{true, false, "IN", NotIn, In},
-	{true, false, "NOT IN", In, NotIn},
-	{true, false, "GREATER THAN", LesserThanEquals, GreaterThan},
-	{true, false, "GREATER THAN EQUALS", LesserThan, GreaterThanEquals},
-	{true, false, "LOWER THAN", GreaterThanEquals, LowerThan},
-	{true, false, "LOWER THAN EQUALS", GreaterThan, LowerThanEquals},
+	{true, false, "Is_Null", NotIsNull, IsNull},
+	{true, false, "Not_Is_Null", IsNull, NotIsNull},
+	{true, false, "Equal", NotEquals, Equals},
+	{true, false, "In", NotIn, In},
+	{true, false, "Not_In", In, NotIn},
+	{true, false, "Greater_Than", LesserThanEquals, GreaterThan},
+	{true, false, "Greater_Than_Equals", LesserThan, GreaterThanEquals},
+	{true, false, "Lesser_Than", GreaterThanEquals, LowerThan},
+	{true, false, "Lesser_Than_Equals", GreaterThan, LowerThanEquals},
 }
 
 func TestType(t *testing.T) {

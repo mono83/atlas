@@ -4,27 +4,27 @@ package match
 type Type byte
 
 // Invert returns inverted match
-func (o Type) Invert() Type {
-	if o == Unknown || o.IsCustom() || !o.IsStandard() {
+func (t Type) Invert() Type {
+	if t == Unknown || t.IsCustom() || !t.IsStandard() {
 		return Unknown
 	}
 
-	if o%2 == 0 {
-		return Type(byte(o) - 1)
+	if t%2 == 0 {
+		return Type(byte(t) - 1)
 	}
 
-	return Type(byte(o) + 1)
+	return Type(byte(t) + 1)
 }
 
 // IsCustom returns true if type is custom type
-func (o Type) IsCustom() bool {
-	return o > 127
+func (t Type) IsCustom() bool {
+	return t > 127
 }
 
 // IsStandard returns true if operation is in standard
 // operations pool
-func (o Type) IsStandard() bool {
-	i := byte(o)
+func (t Type) IsStandard() bool {
+	i := byte(t)
 	return i >= lower && i <= upper
 }
 

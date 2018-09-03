@@ -31,35 +31,33 @@ const (
 )
 
 func (t Type) String() string {
-	switch t {
-	case IsNull:
-		return "IS NULL"
-	case NotIsNull:
-		return "NOT IS NULL"
-	case Equals:
-		return "EQUALS"
-	case NotEquals:
-		return "NOT EQUALS"
-	case In:
-		return "IN"
-	case NotIn:
-		return "NOT IN"
-	case GreaterThan:
-		return "GREATER THAN"
-	case GreaterThanEquals:
-		return "GREATER THAN EQUALS"
-	case LowerThan:
-		return "LOWER THAN"
-	case LowerThanEquals:
-		return "LOWER THAN EQUALS"
-	case Unknown:
-		return "UNKNOWN"
-	default:
-		if t.IsCustom() {
-			return "CUSTOM #" + strconv.Itoa(int(t))
-		}
-		return "UNSUPPORTED #" + strconv.Itoa(int(t))
+	if t.IsCustom() {
+		return "Custom #" + strconv.Itoa(int(t))
 	}
+	if t == Unknown {
+		return "Unknown"
+	}
+
+	d, ok := Definitions[t]
+	if !ok {
+		return "Unsupported #" + strconv.Itoa(int(t))
+	}
+
+	return d.Name
+}
+
+// Names returns full list of string names (including math symbols), that can be
+// used to identify rule type
+func (t Type) Names() []string {
+	var response []string
+	def, ok := Definitions[t]
+	if ok {
+		response = append(response, def.Name)
+		response = append(response, def.Aliases...)
+		response = append(response, def.Math...)
+	}
+
+	return response
 }
 
 // Theese constants describes top and bottom boundaries for registered
