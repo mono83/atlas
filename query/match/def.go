@@ -31,7 +31,7 @@ func init() {
 	Definitions[In] = Def{Args: 2, Name: "In"}
 	Definitions[NotIn] = Def{Args: 2, Name: "Not_In"}
 	Definitions[GreaterThan] = Def{Args: 2, Name: "Greater_Than", Aliases: []string{"GreaterThan", "Gt"}, Math: []string{">"}}
-	Definitions[GreaterThanEquals] = Def{Args: 2, Name: "Greater_Than_Equals", Aliases: []string{"GreaterThanEquals", "Greater_Than_Or_Equals", "GreaterThanOrEquals", "Gte"}, Math: []string{">=", "≥"}}
+	Definitions[GreaterThanEquals] = Def{Args: 2, Name: "Greater_Than_Equals", Aliases: []string{"GreaterThanEquals", "GreaterThanEqual", "Greater_Than_Or_Equals", "GreaterThanOrEquals", "Gte"}, Math: []string{">=", "≥"}}
 	Definitions[LesserThan] = Def{Args: 2, Name: "Lesser_Than", Aliases: []string{"LesserThan", "Lt"}, Math: []string{"<"}}
-	Definitions[LesserThanEquals] = Def{Args: 2, Name: "Lesser_Than_Equals", Aliases: []string{"LesserThanEquals", "Lesser_Than_Or_Equals", "LesserThanOrEquals", "Lte"}, Math: []string{"<=", "≤"}}
+	Definitions[LesserThanEquals] = Def{Args: 2, Name: "Lesser_Than_Equals", Aliases: []string{"LesserThanEquals", "LesserThanEqual", "Lesser_Than_Or_Equals", "LesserThanOrEquals", "Lte"}, Math: []string{"<=", "≤"}}
 }
