@@ -8,3 +8,10 @@ type Rule interface {
 	GetRight() interface{}
 	GetType() match.Type
 }
+
+// RulesAreEqual returns true if provided rules contains same logic
+func RulesAreEqual(a, b Rule) bool {
+	return a.GetType() == b.GetType() &&
+		a.GetLeft() == b.GetLeft() &&
+		a.GetRight() == b.GetRight()
+}
