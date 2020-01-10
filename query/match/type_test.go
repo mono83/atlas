@@ -37,6 +37,12 @@ func TestType(t *testing.T) {
 			assert.Equal(t, d.IsCustom, d.Type.IsCustom())
 			assert.Equal(t, d.Inverted, d.Type.Invert())
 			assert.Equal(t, d.String, d.Type.String())
+
+			if d.Inverted != Unknown {
+				assert.Equal(t, d.IsStandard, d.Inverted.IsStandard())
+				assert.Equal(t, d.IsCustom, d.Inverted.IsCustom())
+				assert.Equal(t, d.Type, d.Inverted.Invert())
+			}
 		})
 	}
 }
