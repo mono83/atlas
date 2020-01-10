@@ -59,7 +59,7 @@ func (t Type) Names() []string {
 	return def.Names()
 }
 
-// Theese constants describes top and bottom boundaries for registered
+// These constants describes top and bottom boundaries for registered
 // matcher type constants
 var (
 	lower byte = 1
