@@ -11,6 +11,6 @@ require (
 	github.com/mono83/xray v1.0.2
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/spf13/cobra v0.0.5
-	github.com/stretchr/testify v1.2.2
+	github.com/stretchr/testify v1.5.1
 	gopkg.in/ini.v1 v1.51.1 // indirect
 )
